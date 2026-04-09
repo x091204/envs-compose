@@ -242,4 +242,3 @@ If ports are already in use:
 ```
 
 stop the conflicting services or change ports inside docker-compose files.
-# envs-compose
