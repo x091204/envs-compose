@@ -14,7 +14,6 @@ Included services:
 
 Everything runs using Docker Compose.
 
----
 
 # What This Setup Gives You
 
@@ -46,7 +45,6 @@ This allows you to practice:
 
 on your own machine.
 
----
 
 # Requirements
 
@@ -81,7 +79,6 @@ envs-compose-main/
 
 Each service starts independently.
 
----
 
 # Starting Jenkins
 
@@ -108,7 +105,6 @@ docker logs jenkins
 
 2. Install suggested plugins
 
----
 
 # Tools Available Inside Jenkins Container
 
@@ -141,7 +137,6 @@ Run vulnerability scans
 Deploy containers
 ```
 
----
 
 # Starting SonarQube (with PostgreSQL)
 
@@ -167,7 +162,6 @@ password: admin
 
 You will be asked to change password after login.
 
----
 
 # Why PostgreSQL Is Included
 
@@ -182,7 +176,6 @@ SonarQube requires a database to store:
 
 This setup already includes PostgreSQL so no additional configuration is required.
 
----
 
 # Checking Running Containers
 
@@ -198,7 +191,6 @@ sonarqube
 postgres
 ```
 
----
 
 # Stopping the Environment
 
@@ -208,7 +200,6 @@ Inside each service directory:
 docker compose down
 ```
 
----
 
 # Data Persistence
 
@@ -218,7 +209,6 @@ This means:
 
 your scan history and configurations will remain even after container restart.
 
----
 
 # Typical Learning Workflow Using This Setup
 
@@ -238,7 +228,6 @@ Run Trivy scan
 
 This environment is intended for local DevOps practice and experimentation.
 
----
 
 # Notes
 
