@@ -1,8 +1,6 @@
 # ⚙️ Portable DevOps Environment
 
-A ready-to-run local DevOps environment using Docker Compose. Spin up Jenkins and SonarQube in minutes — no manual installation needed.
-
----
+A ready-to-run local DevOps environment using Docker Compose. Spin up Jenkins and SonarQube in minutes — no manual installation needed
 
 ## 📦 What's Inside
 
@@ -12,7 +10,6 @@ A ready-to-run local DevOps environment using Docker Compose. Spin up Jenkins an
 | SonarQube | sonarqube:10.4-community | 9000 | Code quality analysis |
 | PostgreSQL | postgres:15 | 5432 | SonarQube database backend |
 
----
 
 ## 🗂️ Structure
 
@@ -31,7 +28,6 @@ envs-compose/
 - [SonarQube setup](#-sonarqube)
 - [Tools included in Jenkins](#️-tools-included-in-jenkins)
 
----
 
 ## ✅ Requirements
 
@@ -42,7 +38,6 @@ docker compose version
 
 Both must be installed before starting.
 
----
 
 ## 🔧 Jenkins
 
@@ -70,7 +65,6 @@ docker logs jenkins
 
 Copy the password from the logs, paste it into the browser, then install suggested plugins.
 
----
 
 ## 🔍 SonarQube
 
@@ -98,7 +92,6 @@ password: admin
 
 You will be prompted to change the password on first login.
 
----
 
 ## 🛠️ Tools Included in Jenkins
 
@@ -116,11 +109,9 @@ The custom Jenkins Dockerfile pre-installs everything you need:
 
 You do not need to install any of these manually — they are ready inside the container.
 
----
 
 ## 📋 Typical Workflow
 
-```
 Write code → push to GitHub
         ↓
 Jenkins picks up the change
@@ -155,7 +146,6 @@ cd jenkins && docker compose down
 cd sonarqube && docker compose down
 ```
 
----
 
 ## ⚠️ Port Conflicts
 
@@ -169,7 +159,6 @@ If you see port errors on startup, these ports must be free:
 
 Stop any conflicting services or change the port mappings in the relevant `docker-compose.yml` file.
 
----
 
 ## 💾 Data Persistence
 
@@ -189,7 +178,6 @@ Your data survives container restarts. To fully wipe everything:
 docker compose down -v
 ```
 
----
 
 ## 📄 License
 
