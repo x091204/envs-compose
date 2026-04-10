@@ -1,244 +1,196 @@
-# Portable DevOps Tools Environment (Local Setup Guide)
+# ⚙️ Portable DevOps Environment
 
-## Purpose
+A ready-to-run local DevOps environment using Docker Compose. Spin up Jenkins and SonarQube in minutes — no manual installation needed.
 
-This repository provides a **ready-to-run local DevOps environment** for students and learners.
+---
 
-It allows you to start working with commonly used CI/CD tools without installing each tool manually on your system.
+## 📦 What's Inside
 
-Included services:
+| Service | Image | Port | Purpose |
+|---------|-------|------|---------|
+| Jenkins | Custom (LTS + tools) | 8080 | CI/CD pipelines |
+| SonarQube | sonarqube:10.4-community | 9000 | Code quality analysis |
+| PostgreSQL | postgres:15 | 5432 | SonarQube database backend |
 
-* Jenkins (preconfigured with DevOps tools)
-* SonarQube (code quality scanner)
-* PostgreSQL (SonarQube database backend)
+---
 
-Everything runs using Docker Compose.
-
-
-# What This Setup Gives You
-
-After starting the environment, you will have:
-
-Jenkins running with:
-
-* Docker CLI support
-* Docker Compose
-* Python3
-* pip + virtual environment support
-* Maven
-* Trivy vulnerability scanner
-
-SonarQube running with:
-
-* persistent PostgreSQL database
-* plugin storage
-* scan history storage
-* configuration persistence
-
-This allows you to practice:
-
-* CI/CD pipelines
-* static code analysis
-* container builds
-* vulnerability scanning
-* DevOps workflow automation
-
-on your own machine.
-
-
-# Requirements
-
-Install the following before starting:
+## 🗂️ Structure
 
 ```
-Docker
-Docker Compose
+envs-compose/
+├── jenkins/
+│   ├── Dockerfile          # Jenkins with pre-installed DevOps tools
+│   └── docker-compose.yml  # Jenkins service
+│
+└── sonarqube/
+    └── docker-compose.yml  # SonarQube + PostgreSQL
 ```
 
-Verify installation:
+**Jump to:**
+- [Jenkins setup](#-jenkins)
+- [SonarQube setup](#-sonarqube)
+- [Tools included in Jenkins](#️-tools-included-in-jenkins)
 
-```
+---
+
+## ✅ Requirements
+
+```bash
 docker --version
 docker compose version
 ```
 
+Both must be installed before starting.
+
 ---
 
-# Folder Structure
+## 🔧 Jenkins
 
-```
-envs-compose-main/
+The Jenkins image comes pre-built with all the tools you need for a DevSecOps pipeline. No manual plugin installation required for the core tools.
 
-├── jenkins/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-│
-├── sonarqube/
-│   └── docker-compose.yml
-```
+### Start
 
-Each service starts independently.
-
-
-# Starting Jenkins
-
-Open terminal:
-
-```
+```bash
 cd jenkins
 docker compose up -d
 ```
 
-Access Jenkins:
+### Access
 
 ```
 http://localhost:8080
 ```
 
-During first login:
+### First login
 
-1. Copy admin password from container logs
-
-```
+```bash
+# Get the admin password
 docker logs jenkins
 ```
 
-2. Install suggested plugins
+Copy the password from the logs, paste it into the browser, then install suggested plugins.
 
+---
 
-# Tools Available Inside Jenkins Container
+## 🔍 SonarQube
 
-This Jenkins image already includes:
+SonarQube runs with a PostgreSQL backend so your scan history and project data persist across restarts.
 
-```
-Docker
-Docker Compose
-Python3
-pip
-virtualenv
-Maven
-Trivy
-wget
-gnupg
-```
+### Start
 
-You do NOT need to install these manually.
-
-They are ready for pipeline usage.
-
-Example tasks supported:
-
-```
-Build project
-Run tests
-Scan code
-Build Docker images
-Run vulnerability scans
-Deploy containers
-```
-
-
-# Starting SonarQube (with PostgreSQL)
-
-Open terminal:
-
-```
+```bash
 cd sonarqube
 docker compose up -d
 ```
 
-Access SonarQube:
+### Access
 
 ```
 http://localhost:9000
 ```
 
-Default login:
+### Default credentials
 
 ```
 username: admin
 password: admin
 ```
 
-You will be asked to change password after login.
+You will be prompted to change the password on first login.
 
+---
 
-# Why PostgreSQL Is Included
+## 🛠️ Tools Included in Jenkins
 
-SonarQube requires a database to store:
+The custom Jenkins Dockerfile pre-installs everything you need:
 
-* scan history
-* project metrics
-* vulnerabilities
-* code smells
-* authentication data
-* plugin data
+| Tool | Purpose |
+|------|---------|
+| Docker | Build and run containers inside pipelines |
+| Docker Compose | Multi-container pipeline steps |
+| Trivy | Container image vulnerability scanning |
+| Maven | Java project build tool |
+| Python3 + pip | Python project support |
+| virtualenv | Python virtual environment support |
+| wget, gnupg | Utility tools |
 
-This setup already includes PostgreSQL so no additional configuration is required.
+You do not need to install any of these manually — they are ready inside the container.
 
+---
 
-# Checking Running Containers
+## 📋 Typical Workflow
 
 ```
+Write code → push to GitHub
+        ↓
+Jenkins picks up the change
+        ↓
+SonarQube analysis (code quality gate)
+        ↓
+Docker image build
+        ↓
+Trivy scan (HIGH/CRITICAL vulnerabilities)
+        ↓
+Push image to Docker Hub
+```
+
+---
+
+## 🛑 Useful Commands
+
+```bash
+# Check running containers
 docker ps
+
+# View Jenkins logs
+docker logs jenkins
+
+# View SonarQube logs
+docker logs sonarq
+
+# Stop Jenkins
+cd jenkins && docker compose down
+
+# Stop SonarQube
+cd sonarqube && docker compose down
 ```
 
-Expected containers:
+---
 
-```
-jenkins
-sonarqube
-postgres
-```
+## ⚠️ Port Conflicts
 
+If you see port errors on startup, these ports must be free:
 
-# Stopping the Environment
+| Port | Service |
+|------|---------|
+| 8080 | Jenkins |
+| 9000 | SonarQube |
+| 5432 | PostgreSQL |
 
-Inside each service directory:
+Stop any conflicting services or change the port mappings in the relevant `docker-compose.yml` file.
 
-```
-docker compose down
-```
+---
 
+## 💾 Data Persistence
 
-# Data Persistence
+All data is stored in Docker named volumes:
 
-SonarQube data is stored using Docker volumes.
+| Volume | Stores |
+|--------|--------|
+| `jenkins_home` | Jenkins jobs, configs, plugins |
+| `sonarqube_data` | Scan results, metrics |
+| `sonarqube_extensions` | SonarQube plugins |
+| `sonarqube_logs` | SonarQube logs |
+| `postgresql_data` | SonarQube database |
 
-This means:
+Your data survives container restarts. To fully wipe everything:
 
-your scan history and configurations will remain even after container restart.
-
-
-# Typical Learning Workflow Using This Setup
-
-Example practice workflow:
-
-```
-Write application code
-        ↓
-Create Jenkins pipeline
-        ↓
-Run SonarQube scan
-        ↓
-Build Docker image
-        ↓
-Run Trivy scan
+```bash
+docker compose down -v
 ```
 
-This environment is intended for local DevOps practice and experimentation.
+---
 
+## 📄 License
 
-# Notes
-
-Make sure Docker service is running before starting containers.
-
-If ports are already in use:
-
-```
-8080
-9000
-5432
-```
-
-stop the conflicting services or change ports inside docker-compose files.
+MIT
