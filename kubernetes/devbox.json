@@ -1,0 +1,33 @@
+{
+    "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.17.1/.schema/devbox.schema.json",
+    "packages": [
+    "kubectl@latest",
+    "kind@latest",
+    "k9s@latest",
+    "kubernetes-helm@latest",
+    "kubectx@latest",
+    "kustomize@latest",
+    "jq@latest",
+    "yq-go@latest",
+    "gh@latest",
+    "go-task@latest",
+    "gum@latest",
+    "envsubst@latest",
+    "oras@latest",
+    "procps",
+    "stern",
+    "cloudflared",
+    "mkcert",
+    "kubeseal"
+    ],
+    "shell": {
+      "init_hook": [
+        "echo 'Welcome to devbox!' > /dev/null"
+      ],
+      "scripts": {
+        "test": [
+          "echo \"kind create cluster --name devbox-cluster\" && exit 1"
+        ]
+      }
+    }
+  }

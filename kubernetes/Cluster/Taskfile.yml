@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+vars:
+  GREETING: Hello, world!
+
+tasks:
+  task.1:Generate-cluster-config:
+    desc: Generate kind config with local absolute paths for PV mounts
+    cmds:
+      - REPLACE_WITH_ABSOLUTE_PATH=${PWD} envsubst < kind-config.yaml.TEMPLATE > kind-config.yaml
+  task.2:Create-cluster:
+    desc: Create a kubernetes cluster using kind
+    cmds:
+      - kind create cluster --config kind-config.yaml
+  task.3:Delete-cluster:
+    desc: Delete and existing a kind Kubernetes cluster
+    cmds:
+      - kind delete cluster
