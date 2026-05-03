@@ -11,6 +11,7 @@
     "yq-go@latest",
     "gh@latest",
     "go-task@latest",
+    "go@latest",
     "gum@latest",
     "envsubst@latest",
     "oras@latest",
